@@ -1,6 +1,8 @@
 {
   "parser": "babel-eslint",
   "rules": {
-      "quotes": ["error", "double"]
+    "eqeqeq": ["error", "always"],
+    "semi": ["error", "always"],
+    "quotes": ["error", "double"]
   }
 }
