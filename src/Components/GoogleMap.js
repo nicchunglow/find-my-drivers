@@ -3,10 +3,13 @@ import React, { useEffect, useRef } from "react";
 const GoogleMap = (userPosition) => {
 	const googleMapRef = useRef(null);
 	let googleMap = null;
-
+	let marker = null;
 	useEffect(() => {
 		googleMap = initGoogleMap();
-		createMarker();
+		marker = createMarker();
+		marker.addListener("click", () => {
+			infowindow.open(googleMap, marker);
+		});
 	}, []);
 
 	const initGoogleMap = () => {
@@ -22,6 +25,11 @@ const GoogleMap = (userPosition) => {
 			position: { lat: userPosition.userPosition.lat, lng: userPosition.userPosition.lng },
 			map: googleMap,
 		});
+
+	const infowindow = new google.maps.InfoWindow({
+		content: "hi",
+		maxWidth: 200,
+	});
 
 	return <div ref={googleMapRef} style={{ width: 500, height: 500 }} />;
 };
