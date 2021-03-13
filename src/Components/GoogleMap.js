@@ -23,7 +23,7 @@ const GoogleMap = (userPosition) => {
 			map: googleMap,
 		});
 
-	return <div ref={googleMapRef} style={{ width: 1000, height: 1000 }} />;
+	return <div ref={googleMapRef} style={{ width: 500, height: 500 }} />;
 };
 
 export default GoogleMap;

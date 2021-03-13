@@ -34,10 +34,10 @@ export default function MainPage() {
 	}, []);
 
 	return (
-		<div>
+		<div className="mainPage">
 			<h1>{drivers}</h1>
-			<h1>{driverLocation[0]?.driver_id}</h1>
-			<div>{!loadMap ? <div>Loading...</div> : <GoogleMap userPosition={userPosition} />}</div>
+			<div>{driverLocation[0]?.driver_id ? <h2>{driverLocation[0]?.driver_id}</h2> : "loading..."} </div>
+			{!loadMap ? <div>Loading...</div> : <GoogleMap userPosition={userPosition} />}
 		</div>
 	);
 }
