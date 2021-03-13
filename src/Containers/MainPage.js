@@ -24,7 +24,6 @@ export default function MainPage() {
 				`/drivers?latitude=${userPosition.lat}&longitude=${userPosition.lng}&count=${drivers}`,
 		);
 		setDriverLocation(res.data.drivers);
-		console.log(driverLocation[0]);
 	}, []);
 
 	useEffect(() => {
