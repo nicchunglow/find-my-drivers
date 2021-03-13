@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-const GMap = (userPosition) => {
+const GoogleMap = (userPosition) => {
 	const googleMapRef = useRef(null);
 	let googleMap = null;
 
@@ -26,4 +26,4 @@ const GMap = (userPosition) => {
 	return <div ref={googleMapRef} style={{ width: 1000, height: 1000 }} />;
 };
 
-export default GMap;
+export default GoogleMap;

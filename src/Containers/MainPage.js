@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import GMap from "../Components/GMap";
+import GoogleMap from "../Components/GoogleMap";
 
 export default function MainPage() {
 	const [driverLocation, setDriverLocation] = useState([]);
@@ -37,7 +37,7 @@ export default function MainPage() {
 		<div>
 			<h1>{drivers}</h1>
 			<h1>{driverLocation[0]?.driver_id}</h1>
-			<div>{!loadMap ? <div>Loading...</div> : <GMap userPosition={userPosition} />}</div>
+			<div>{!loadMap ? <div>Loading...</div> : <GoogleMap userPosition={userPosition} />}</div>
 		</div>
 	);
 }
