@@ -1,3 +1,4 @@
+/* eslint-disable quotes */
 import React, { useEffect, useRef } from "react";
 
 const GoogleMap = (userPosition) => {
@@ -27,7 +28,7 @@ const GoogleMap = (userPosition) => {
 		});
 
 	const infowindow = new google.maps.InfoWindow({
-		content: "hi",
+		content: "<div>hi</div>",
 		maxWidth: 200,
 	});
 
