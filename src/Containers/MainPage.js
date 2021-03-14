@@ -20,6 +20,10 @@ export default function MainPage() {
 	};
 
 	useEffect(async () => {
+		loadGoogleMapScript(() => {
+			setLoadMap(true);
+		});
+		setPositions({ ...positions, user: userPosition });
 		const res = await Axios.get(
 			process.env.REACT_APP_BASE_MAP_URL +
 				`/drivers?latitude=${userPosition.lat}&longitude=${userPosition.lng}&count=${drivers}`,
@@ -27,15 +31,6 @@ export default function MainPage() {
 		setDriversPosition(res.data.drivers);
 	}, []);
 
-	useEffect(() => {
-		loadGoogleMapScript(() => {
-			setLoadMap(true);
-		});
-	}, []);
-
-	useEffect(() => {
-		setPositions({ ...positions, user: userPosition });
-	}, []);
 	return (
 		<div className="mainPage">
 			<h1>{drivers}</h1>
