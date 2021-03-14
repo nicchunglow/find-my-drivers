@@ -3,7 +3,8 @@ import Axios from "axios";
 import GoogleMap from "../Components/GoogleMap";
 
 export default function MainPage() {
-	const [driverLocation, setDriverLocation] = useState([]);
+	const [positions, setPositions] = useState({});
+	const [driversPosition, setDriversPosition] = useState([]);
 	const [loadMap, setLoadMap] = useState(false);
 	const userPosition = {
 		lat: 51.5049375,
@@ -23,7 +24,7 @@ export default function MainPage() {
 			process.env.REACT_APP_BASE_MAP_URL +
 				`/drivers?latitude=${userPosition.lat}&longitude=${userPosition.lng}&count=${drivers}`,
 		);
-		setDriverLocation(res.data.drivers);
+		setDriversPosition(res.data.drivers);
 	}, []);
 
 	useEffect(() => {
@@ -32,11 +33,14 @@ export default function MainPage() {
 		});
 	}, []);
 
+	useEffect(() => {
+		setPositions({ ...positions, user: userPosition });
+	}, []);
 	return (
 		<div className="mainPage">
 			<h1>{drivers}</h1>
-			<div>{driverLocation[0]?.driver_id ? <h2>{driverLocation[0]?.driver_id}</h2> : "loading..."} </div>
-			{!loadMap ? <div>Loading...</div> : <GoogleMap userPosition={userPosition} />}
+			<div>{driversPosition[0]?.driver_id ? <h2>{driversPosition[0]?.driver_id}</h2> : "loading..."} </div>
+			{!loadMap ? <div>Loading...</div> : <GoogleMap userPosition={positions.user} />}
 		</div>
 	);
 }

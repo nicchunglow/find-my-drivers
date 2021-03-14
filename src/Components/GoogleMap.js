@@ -2,16 +2,17 @@ import React, { useEffect, useRef } from "react";
 
 const GoogleMap = (userPosition) => {
 	const googleMapRef = useRef(null);
-	let googleMap = null;
-	let marker = null;
+	let googleMap;
+	let marker;
 	useEffect(() => {
 		googleMap = initGoogleMap();
 		marker = createMarker();
 	}, []);
 
 	const initGoogleMap = () => {
+		console.log(userPosition);
 		return new google.maps.Map(googleMapRef.current, {
-			center: { lat: -33.91721, lng: 151.2263 },
+			center: { lat: userPosition.userPosition.lat, lng: userPosition.userPosition.lng },
 			zoom: 16,
 		});
 	};
@@ -29,28 +30,26 @@ const GoogleMap = (userPosition) => {
 		},
 	};
 	const createMarker = () => {
-		for (let i = 0; i < features.length; i++) {
-			marker = new google.maps.Marker({
-				animation: google.maps.Animation.DROP,
-				position: features[i].position,
-				icon: icons[features[i].type],
-				map: googleMap,
-			});
-		}
+		marker = new google.maps.Marker({
+			animation: google.maps.Animation.DROP,
+			position: new google.maps.LatLng(userPosition.userPosition),
+			icon: icons.userLocation,
+			map: googleMap,
+		});
 	};
 
-	const features = [
-		{
-			position: new google.maps.LatLng(-33.91721, 151.2263),
-			type: "parking",
-		},
-		{
-			position: new google.maps.LatLng(-33.91727341958453, 151.23348314155578),
-			type: "userLocation",
-		},
-	];
+	// const features = [
+	// 	{
+	// 		position: new google.maps.LatLng(userPosition.userPosition.lat, userPosition.userPosition.lng),
+	// 		type: "parking",
+	// 	},
+	// 	{
+	// 		position: new google.maps.LatLng(userPosition.userPosition.lat, userPosition.userPosition.lng),
+	// 		type: "userLocation",
+	// 	},
+	// ];
 
-	return <div ref={googleMapRef} style={{ width: 600, height: 800 }} />;
+	return <div ref={googleMapRef} style={{ width: 600, height: 600 }} />;
 };
 
 export default GoogleMap;
