@@ -19,18 +19,36 @@ export default function MainPage() {
 		googleMapScript.addEventListener("load", callback);
 	};
 
-	useEffect(async () => {
-		loadGoogleMapScript(() => {
-			setLoadMap(true);
-		});
-		setPositions({ ...positions, user: userPosition });
-		const res = await Axios.get(
-			process.env.REACT_APP_BASE_MAP_URL +
-				`/drivers?latitude=${userPosition.lat}&longitude=${userPosition.lng}&count=${drivers}`,
-		);
-		setDriversPosition(res.data.drivers);
-	}, []);
+	const loadDriversPositions = () => {
+		useEffect(async () => {
+			const res = await Axios.get(
+				process.env.REACT_APP_BASE_MAP_URL +
+					`/drivers?latitude=${userPosition.lat}&longitude=${userPosition.lng}&count=${drivers}`,
+			);
+			setDriversPosition(res.data.drivers);
+		}, []);
+	};
+	const initMap = () => {
+		useEffect(() => {
+			loadGoogleMapScript(() => {
+				setLoadMap(true);
+			});
+		}, []);
+	};
 
+	const loadUserPosition = () => {
+		useEffect(() => {
+			setPositions({ ...positions, user: userPosition });
+		}, []);
+	};
+
+	const initPage = () => {
+		initMap();
+		loadDriversPositions();
+		loadUserPosition();
+	};
+
+	initPage();
 	return (
 		<div className="mainPage">
 			<h1>{drivers}</h1>
