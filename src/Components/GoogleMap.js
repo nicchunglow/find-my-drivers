@@ -10,7 +10,6 @@ const GoogleMap = (userPosition) => {
 	}, []);
 
 	const initGoogleMap = () => {
-		console.log(userPosition);
 		return new google.maps.Map(googleMapRef.current, {
 			center: { lat: userPosition.userPosition.lat, lng: userPosition.userPosition.lng },
 			zoom: 16,

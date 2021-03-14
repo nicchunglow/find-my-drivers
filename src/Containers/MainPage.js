@@ -4,7 +4,6 @@ import GoogleMap from "../Components/GoogleMap";
 
 export default function MainPage() {
 	const [positions, setPositions] = useState({});
-	const [driversPosition, setDriversPosition] = useState([]);
 	const [loadMap, setLoadMap] = useState(false);
 	const userPosition = {
 		lat: 51.5049375,
@@ -25,7 +24,7 @@ export default function MainPage() {
 				process.env.REACT_APP_BASE_MAP_URL +
 					`/drivers?latitude=${userPosition.lat}&longitude=${userPosition.lng}&count=${drivers}`,
 			);
-			setDriversPosition(res.data.drivers);
+			setPositions((positions) => ({ ...positions, drivers: res.data.drivers }));
 		}, []);
 	};
 	const initMap = () => {
@@ -38,21 +37,21 @@ export default function MainPage() {
 
 	const loadUserPosition = () => {
 		useEffect(() => {
-			setPositions({ ...positions, user: userPosition });
+			setPositions((positions) => ({ ...positions, user: userPosition }));
 		}, []);
 	};
 
 	const initPage = () => {
-		initMap();
 		loadDriversPositions();
 		loadUserPosition();
+		initMap();
 	};
 
 	initPage();
 	return (
 		<div className="mainPage">
 			<h1>{drivers}</h1>
-			<div>{driversPosition[0]?.driver_id ? <h2>{driversPosition[0]?.driver_id}</h2> : "loading..."} </div>
+			<div>{positions?.drivers ? <h2>{positions.drivers[0].driver_id}</h2> : "loading..."} </div>
 			{!loadMap ? <div>Loading...</div> : <GoogleMap userPosition={positions.user} />}
 		</div>
 	);
