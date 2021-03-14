@@ -2,11 +2,10 @@ import React, { useEffect, useRef } from "react";
 
 const GoogleMap = (positions) => {
 	const allPositions = positions.positions;
-	console.log(allPositions);
 	const googleMapRef = useRef(null);
 	let googleMap;
 	let marker;
-
+	const user = allPositions.find((position) => position.type === "user");
 	const iconBase = "https://www.flaticon.com/svg/vstatic/svg";
 
 	const icons = {
@@ -24,7 +23,7 @@ const GoogleMap = (positions) => {
 		marker = new google.maps.Marker({
 			animation: google.maps.Animation.DROP,
 			position: { lat: lat, lng: lng },
-			icon: icons[type],
+			// icon: icons[type],
 			map: googleMap,
 		});
 	};
@@ -41,7 +40,7 @@ const GoogleMap = (positions) => {
 
 	const initGoogleMap = () => {
 		return new google.maps.Map(googleMapRef.current, {
-			center: { lat: allPositions[0].lat, lng: allPositions[0].lng },
+			center: { lat: user.lat, lng: user.lng },
 			zoom: 14,
 		});
 	};
