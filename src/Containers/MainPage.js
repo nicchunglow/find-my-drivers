@@ -54,28 +54,30 @@ export default function MainPage() {
 
 	initPage();
 	return (
-		<div className="container">
+		<div className="main-page">
 			<h2>WHERE'S MY DRIVERS</h2>
-			<br />
-			{!loadMap ? (
-				<div>Loading...</div>
-			) : (
-				<div>
-					<GoogleMap positions={positions} />
+			<div className="main-page-container ">
+				{!loadMap ? (
+					<div>Loading...</div>
+				) : (
+					<div>
+						<GoogleMap positions={positions} />
+					</div>
+				)}
+
+				<div className="slider">
+					<h4>Current number of drivers: {numOfDrivers}</h4>
+					<Slider
+						valueLabelDisplay="auto"
+						color="secondary"
+						step={1}
+						defaultValue={numOfDrivers}
+						min={1}
+						max={50}
+						onChange={handleChangeNumOfDrivers}
+						value={numOfDrivers}
+					/>
 				</div>
-			)}
-			{/* <h1>{numOfDrivers}</h1> */}
-			<div className="slider-container">
-				<Slider
-					valueLabelDisplay="auto"
-					color="secondary"
-					step={1}
-					defaultValue={numOfDrivers}
-					min={1}
-					max={50}
-					onChange={handleChangeNumOfDrivers}
-					value={numOfDrivers}
-				/>
 			</div>
 		</div>
 	);
