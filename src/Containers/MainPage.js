@@ -27,34 +27,25 @@ export default function MainPage() {
 		googleMapScript.addEventListener("load", callback);
 	};
 
-	const initMap = () => {
-		useEffect(() => {
-			loadGoogleMapScript(() => {
-				setLoadMap(true);
-			});
-		}, []);
-	};
+	useEffect(() => {
+		loadGoogleMapScript(() => {
+			setLoadMap(true);
+		});
+	}, []);
 
-	const loadDriversPositions = () => {
-		useEffect(async () => {
-			const res = await Axios.get(
-				process.env.REACT_APP_BASE_MAP_URL +
-					`/drivers?latitude=${user.location.latitude}&longitude=${user.location.longitude}&count=${numOfDrivers}`,
-			);
-			for (let i = 0; i < res.data.drivers.length; i++) {
-				let driver = res.data.drivers[i];
-				console.log(driver);
-				setPositions((positions) => [...positions, driver]);
-			}
-		}, []);
-	};
+	useEffect(async () => {
+		setPositions([user]);
+		const res = await Axios.get(
+			process.env.REACT_APP_BASE_MAP_URL +
+				`/drivers?latitude=${user.location.latitude}&longitude=${user.location.longitude}&count=${numOfDrivers}`,
+		);
+		for (let i = 0; i < res.data.drivers.length; i++) {
+			let driver = res.data.drivers[i];
+			setPositions((positions) => [...positions, driver]);
+		}
+	}, [numOfDrivers]);
 
-	const initPage = () => {
-		loadDriversPositions();
-		initMap();
-	};
-
-	initPage();
+	console.log(positions);
 	return (
 		<div className="main-page">
 			<h2>FIND MY DRIVERS</h2>
