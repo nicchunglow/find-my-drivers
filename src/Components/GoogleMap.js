@@ -6,15 +6,15 @@ const GoogleMap = (positions) => {
 	let googleMap;
 	let marker;
 	const user = allPositions.find((position) => position.type === "user");
-	const iconBase = "https://www.flaticon.com/svg/vstatic/svg";
+	const iconBase = "https://image.flaticon.com/icons/png";
 
 	const icons = {
 		driver: {
-			url: iconBase + "/1048/1048314.svg?token=exp=1615717226~hmac=fd1df196550f266c4f3be3ef3ac3bbcc",
+			url: iconBase + "/128/1048/1048314.png",
 			scaledSize: new google.maps.Size(30, 30),
 		},
 		user: {
-			url: iconBase + "/3180/3180209.svg?token=exp=1615716990~hmac=4771b645c972ae50d2dcf93468eb5055",
+			url: iconBase + "/128/777/777548.png",
 			scaledSize: new google.maps.Size(30, 30),
 		},
 	};
@@ -23,7 +23,7 @@ const GoogleMap = (positions) => {
 		marker = new google.maps.Marker({
 			animation: google.maps.Animation.DROP,
 			position: { lat: lat, lng: lng },
-			// icon: icons[type],
+			icon: icons[type],
 			map: googleMap,
 		});
 	};
@@ -44,12 +44,13 @@ const GoogleMap = (positions) => {
 			zoom: 14,
 		});
 	};
+
 	useEffect(() => {
 		googleMap = initGoogleMap();
 		marker = createMarker();
 	}, []);
 
-	return <div ref={googleMapRef} style={{ width: "90vw", height: "80vh" }} />;
+	return <div ref={googleMapRef} style={{ width: "90vw", maxWidth: 600, height: "70vh" }} />;
 };
 
 export default GoogleMap;
