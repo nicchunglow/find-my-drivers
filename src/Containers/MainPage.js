@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import GoogleMap from "../Components/GoogleMap";
-import { Slider } from "@material-ui/core";
+import { Container, Slider } from "@material-ui/core";
+import "./MainPage.css";
 
 export default function MainPage() {
 	const user = {
@@ -53,20 +54,29 @@ export default function MainPage() {
 
 	initPage();
 	return (
-		<div>
+		<div className="container">
+			<h2>WHERE'S MY DRIVERS</h2>
 			<br />
-			{!loadMap ? <div>Loading...</div> : <GoogleMap positions={positions} />}
-			<h1>{numOfDrivers}</h1>
-			<Slider
-				valueLabelDisplay="auto"
-				color="secondary"
-				step={1}
-				defaultValue={numOfDrivers}
-				min={1}
-				max={50}
-				onChange={handleChangeNumOfDrivers}
-				value={numOfDrivers}
-			/>
+			{!loadMap ? (
+				<div>Loading...</div>
+			) : (
+				<div>
+					<GoogleMap positions={positions} />
+				</div>
+			)}
+			{/* <h1>{numOfDrivers}</h1> */}
+			<div className="slider-container">
+				<Slider
+					valueLabelDisplay="auto"
+					color="secondary"
+					step={1}
+					defaultValue={numOfDrivers}
+					min={1}
+					max={50}
+					onChange={handleChangeNumOfDrivers}
+					value={numOfDrivers}
+				/>
+			</div>
 		</div>
 	);
 }

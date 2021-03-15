@@ -1,11 +1,12 @@
+import { Container } from "@material-ui/core";
 import "./App.css";
 import MainPage from "./Containers/MainPage";
 
 function App() {
 	return (
-		<div className="App">
+		<Container display="flex" justifyContent="center">
 			<MainPage />
-		</div>
+		</Container>
 	);
 }
 
