@@ -4,7 +4,6 @@ import GoogleMap from "../Components/GoogleMap";
 import { Slider } from "@material-ui/core";
 
 export default function MainPage() {
-	const max = 50;
 	const user = {
 		lat: 51.5049375,
 		lng: -0.0964509,
@@ -53,16 +52,17 @@ export default function MainPage() {
 	};
 
 	initPage();
-
 	return (
-		<div className="mainPage">
-			<h1>{numOfDrivers}</h1>
+		<div>
+			<br />
 			{!loadMap ? <div>Loading...</div> : <GoogleMap positions={positions} />}
+			<h1>{numOfDrivers}</h1>
 			<Slider
-				valueLabelDisplay="on"
+				valueLabelDisplay="auto"
 				color="secondary"
 				step={1}
 				defaultValue={numOfDrivers}
+				min={1}
 				max={50}
 				onChange={handleChangeNumOfDrivers}
 				value={numOfDrivers}
