@@ -55,7 +55,7 @@ export default function MainPage() {
 	initPage();
 	return (
 		<div className="main-page">
-			<h2>WHERE'S MY DRIVERS</h2>
+			<h2>FIND MY DRIVERS</h2>
 			<div className="main-page-container ">
 				{!loadMap ? (
 					<div>Loading...</div>
