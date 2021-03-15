@@ -3,11 +3,10 @@ import "./GoogleMap.css";
 
 const GoogleMap = (positions) => {
 	const allPositions = positions.positions;
-	console.log(allPositions);
 	const googleMapRef = useRef(null);
 	let googleMap;
 	let marker;
-	const user = allPositions[0];
+	const user = allPositions.find((position) => position.hasOwnProperty("user_id"));
 	const iconBase = "https://image.flaticon.com/icons/png";
 
 	const icons = {
