@@ -6,11 +6,13 @@ import "./MainPage.css";
 
 export default function MainPage() {
 	const user = {
-		lat: 51.5049375,
-		lng: -0.0964509,
-		type: "user",
+		user_id: "something",
+		location: {
+			latitude: 51.5049375,
+			longitude: -0.0964509,
+		},
 	};
-	const [numOfDrivers, setNumOfDrivers] = useState(5);
+	const [numOfDrivers, setNumOfDrivers] = useState(1);
 	const [positions, setPositions] = useState([user]);
 	const [loadMap, setLoadMap] = useState(false);
 
@@ -37,11 +39,11 @@ export default function MainPage() {
 		useEffect(async () => {
 			const res = await Axios.get(
 				process.env.REACT_APP_BASE_MAP_URL +
-					`/drivers?latitude=${user.lat}&longitude=${user.lng}&count=${numOfDrivers}`,
+					`/drivers?latitude=${user.location.latitude}&longitude=${user.location.longitude}&count=${numOfDrivers}`,
 			);
 			for (let i = 0; i < res.data.drivers.length; i++) {
 				let driver = res.data.drivers[i];
-				driver["type"] = "driver";
+				console.log(driver);
 				setPositions((positions) => [...positions, driver]);
 			}
 		}, []);

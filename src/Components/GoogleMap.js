@@ -3,10 +3,11 @@ import "./GoogleMap.css";
 
 const GoogleMap = (positions) => {
 	const allPositions = positions.positions;
+	console.log(allPositions);
 	const googleMapRef = useRef(null);
 	let googleMap;
 	let marker;
-	const user = allPositions.find((position) => position.type === "user");
+	const user = allPositions[0];
 	const iconBase = "https://image.flaticon.com/icons/png";
 
 	const icons = {
@@ -31,18 +32,18 @@ const GoogleMap = (positions) => {
 
 	const createMarker = () => {
 		allPositions.forEach((position) => {
-			if (position.type === "user") {
-				markerTemplate(position.type, position.lat, position.lng);
-			} else if (position.type === "driver") {
-				markerTemplate(position.type, position.location.latitude, position.location.longitude);
+			if (position.hasOwnProperty("user_id")) {
+				markerTemplate("user", position.location.latitude, position.location.longitude);
+			} else {
+				markerTemplate("driver", position.location.latitude, position.location.longitude);
 			}
 		});
 	};
 
 	const initGoogleMap = () => {
 		return new google.maps.Map(googleMapRef.current, {
-			center: { lat: user.lat, lng: user.lng },
-			zoom: 14,
+			center: { lat: user.location.latitude, lng: user.location.longitude },
+			zoom: 12,
 		});
 	};
 
