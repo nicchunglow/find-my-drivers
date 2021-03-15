@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
 import GoogleMap from "../Components/GoogleMap";
-import { Container, Slider } from "@material-ui/core";
+import { Card, Slider } from "@material-ui/core";
 import "./MainPage.css";
 
 export default function MainPage() {
@@ -64,19 +64,20 @@ export default function MainPage() {
 						<GoogleMap positions={positions} />
 					</div>
 				)}
-
-				<div className="slider">
+				<div className="slider-container">
 					<h4>Current number of drivers: {numOfDrivers}</h4>
-					<Slider
-						valueLabelDisplay="auto"
-						color="secondary"
-						step={1}
-						defaultValue={numOfDrivers}
-						min={1}
-						max={50}
-						onChange={handleChangeNumOfDrivers}
-						value={numOfDrivers}
-					/>
+					<div className="slider">
+						<Slider
+							valueLabelDisplay="auto"
+							color="secondary"
+							step={1}
+							defaultValue={numOfDrivers}
+							min={1}
+							max={50}
+							onChange={handleChangeNumOfDrivers}
+							value={numOfDrivers}
+						/>
+					</div>
 				</div>
 			</div>
 		</div>
