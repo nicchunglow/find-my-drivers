@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import "./GoogleMap.css";
 
 const GoogleMap = (positions) => {
 	const allPositions = positions.positions;
@@ -50,7 +51,7 @@ const GoogleMap = (positions) => {
 		marker = createMarker();
 	}, []);
 
-	return <div ref={googleMapRef} style={{ width: "90vw", maxWidth: 600, height: "70vh" }} />;
+	return <div ref={googleMapRef} className="map" />;
 };
 
 export default GoogleMap;
