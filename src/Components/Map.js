@@ -11,7 +11,7 @@ const Map = (props) => {
 
 	const [lng, setLng] = useState(features[0].geometry.coordinates[0]);
 	const [lat, setLat] = useState(features[0].geometry.coordinates[1]);
-	const [zoom, setZoom] = useState(12);
+	const [zoom, setZoom] = useState(14);
 
 	let map;
 	let geojson = {
