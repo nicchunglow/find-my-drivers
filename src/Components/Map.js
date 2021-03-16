@@ -11,7 +11,7 @@ const Map = (props) => {
 	const { features } = props;
 	const [lng, setLng] = useState(features[0].geometry.coordinates[0]);
 	const [lat, setLat] = useState(features[0].geometry.coordinates[1]);
-	const [zoom, setZoom] = useState(10);
+	const [zoom, setZoom] = useState(12);
 	let marker;
 
 	let geojson = {
@@ -33,6 +33,7 @@ const Map = (props) => {
 				.setLngLat(coordinates)
 				.setPopup(popup) // sets a popup on this marker
 				.addTo(map);
+			console.log(marker);
 		};
 
 		geojson.features.forEach(function (marker) {
@@ -52,21 +53,15 @@ const Map = (props) => {
 		map.addControl(geocoder);
 
 		map.addControl(new mapboxgl.NavigationControl(), "top-right");
+		function onDragEnd() {
+			var lngLat = marker.getLngLat();
+			coordinates.style.display = "block";
+			coordinates.innerHTML = "Longitude: " + lngLat.lng + "<br />Latitude: " + lngLat.lat;
+			console.log(lnglat);
+		}
 
-		map.on("mouseenter", "user", function () {
-			map.getCanvas().style.cursor = "pointer";
-		});
+		marker.on("dragend", onDragEnd);
 
-		map.on("mouseleave", "user", function () {
-			map.getCanvas().style.cursor = "";
-		});
-
-		map.on("move", () => {
-			onDragEnd();
-			setLng(map.getCenter().lng.toFixed(4));
-			setLat(map.getCenter().lat.toFixed(4));
-			setZoom(map.getZoom().toFixed(2));
-		});
 		return () => map.remove();
 	}, []);
 

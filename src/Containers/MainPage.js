@@ -42,7 +42,7 @@ export default function MainPage() {
 				},
 				geometry: {
 					type: "Point",
-					coordinates: [driver.location.longitude, driver.location.latitude],
+					coordinates: [driver.location.latitude, driver.location.longitude],
 				},
 			};
 			setPositions((positions) => [...positions, newDriver]);
