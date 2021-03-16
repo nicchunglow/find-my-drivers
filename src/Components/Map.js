@@ -28,14 +28,6 @@ const Map = (props) => {
 			zoom: zoom,
 		});
 
-		map.on("load", function () {
-			map.addSource("user", { type: "geojson", data: geojson });
-			map.addLayer({
-				id: "user",
-				type: "symbol",
-				source: "user",
-			});
-		});
 		const makeMarker = (coordinates, popup, drag) => {
 			marker = new mapboxgl.Marker({ draggable: drag })
 				.setLngLat(coordinates)
@@ -75,12 +67,9 @@ const Map = (props) => {
 			setLat(map.getCenter().lat.toFixed(4));
 			setZoom(map.getZoom().toFixed(2));
 		});
-		function onDragEnd() {
-			console.log("hi");
-		}
-		marker.on("dragend", onDragEnd());
 		return () => map.remove();
 	}, []);
+
 	return (
 		<div>
 			<div>
