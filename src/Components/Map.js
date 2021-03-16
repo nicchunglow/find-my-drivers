@@ -44,7 +44,7 @@ const Map = (props) => {
 		};
 
 		geojson.features.forEach(function (marker) {
-			var popup = new mapboxgl.Popup({ offset: 25 }).setText(marker.properties.message);
+			let popup = new mapboxgl.Popup({ offset: 25 }).setText(marker.properties.message);
 			if (marker.type === "user") {
 				makeMarker(marker.geometry.coordinates, popup, true);
 			} else {
