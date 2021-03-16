@@ -6,13 +6,18 @@ import Map from "../Components/Map";
 
 export default function MainPage() {
 	const user = {
-		user_id: "something",
-		location: {
-			latitude: 51.5049375,
-			longitude: -0.0964509,
+		type: "user",
+		properties: {
+			message: "This is where you are",
+			iconSize: [40, 40],
+		},
+		geometry: {
+			type: "Point",
+			coordinates: [-0.0964509, 51.5049375],
 		},
 	};
-	const [numOfDrivers, setNumOfDrivers] = useState(1);
+
+	const [numOfDrivers, setNumOfDrivers] = useState(2);
 	const [positions, setPositions] = useState([user]);
 	const [loadMap, setLoadMap] = useState(false);
 
@@ -20,23 +25,32 @@ export default function MainPage() {
 		setNumOfDrivers(newValue);
 	};
 
-	const loadGoogleMapScript = (callback) => {
-		return callback;
-	};
-
 	useEffect(async () => {
-		setPositions([user]);
 		const res = await Axios.get(
 			process.env.REACT_APP_BASE_MAP_URL +
-				`/drivers?latitude=${user.location.latitude}&longitude=${user.location.longitude}&count=${numOfDrivers}`,
+				`/drivers?latitude=${user.geometry.coordinates[0]}&longitude=${user.geometry.coordinates[1]}&count=${numOfDrivers}`,
 		);
+		user.properties.message = `The estimated pickup time is ${res.data.pickup_eta} min/s`;
+		setPositions([user]);
 		for (let i = 0; i < res.data.drivers.length; i++) {
 			let driver = res.data.drivers[i];
-			setPositions((positions) => [...positions, driver]);
+			let newDriver = {
+				type: "driver",
+				properties: {
+					message: `The estimated pickup time is ${res.data.pickup_eta} min/s.`,
+					iconSize: [40, 40],
+				},
+				geometry: {
+					type: "Point",
+					coordinates: [driver.location.longitude, driver.location.latitude],
+				},
+			};
+			setPositions((positions) => [...positions, newDriver]);
 		}
 		setLoadMap(true);
 	}, [numOfDrivers]);
 
+	console.log(positions);
 	return (
 		<div className="main-page">
 			<h2>FIND MY DRIVERS</h2>
@@ -45,7 +59,7 @@ export default function MainPage() {
 					<div>Loading...</div>
 				) : (
 					<div>
-						<Map user={user} />
+						<Map features={positions} />
 					</div>
 				)}
 				<div className="slider-container">
