@@ -5,7 +5,7 @@ import "./MainPage.css";
 import Map from "../Components/Map";
 
 export default function MainPage() {
-	const user = {
+	let user = {
 		type: "user",
 		properties: {
 			message: "This is where you are",
@@ -50,7 +50,6 @@ export default function MainPage() {
 		setLoadMap(true);
 	}, [numOfDrivers]);
 
-	console.log(positions);
 	return (
 		<div className="main-page">
 			<h2>FIND MY DRIVERS</h2>

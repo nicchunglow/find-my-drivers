@@ -34,12 +34,20 @@ const Map = (props) => {
 				source: "user",
 			});
 		});
-		geojson.features.forEach(function (marker) {
-			var popup = new mapboxgl.Popup({ offset: 25 }).setText(marker.properties.message);
-			new mapboxgl.Marker()
-				.setLngLat(marker.geometry.coordinates)
+		const makeMarker = (coordinates, popup, drag) => {
+			marker = new mapboxgl.Marker({ draggable: drag })
+				.setLngLat(coordinates)
 				.setPopup(popup) // sets a popup on this marker
 				.addTo(map);
+		};
+
+		geojson.features.forEach(function (marker) {
+			var popup = new mapboxgl.Popup({ offset: 25 }).setText(marker.properties.message);
+			if (marker.type === "user") {
+				makeMarker(marker.geometry.coordinates, popup, true);
+			} else {
+				makeMarker(marker.geometry.coordinates, popup, false);
+			}
 		});
 		map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
@@ -51,13 +59,18 @@ const Map = (props) => {
 			map.getCanvas().style.cursor = "";
 		});
 
-		map.on("dragend", () => {
+		map.on("move", () => {
+			onDragEnd();
 			setLng(map.getCenter().lng.toFixed(4));
 			setLat(map.getCenter().lat.toFixed(4));
 			setZoom(map.getZoom().toFixed(2));
 		});
+		function onDragEnd() {
+			console.log("hi");
+		}
+		marker.on("dragend", onDragEnd());
 		return () => map.remove();
-	}, [geojson]);
+	}, []);
 	return (
 		<div>
 			<div>
