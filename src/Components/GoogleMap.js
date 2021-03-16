@@ -48,6 +48,9 @@ const GoogleMap = (positions) => {
 
 	useEffect(() => {
 		googleMap = initGoogleMap();
+	}, []);
+
+	useEffect(() => {
 		marker = createMarker();
 	}, []);
 
