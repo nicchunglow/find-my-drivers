@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import GoogleMap from "../Components/GoogleMap";
-import { Card, Slider } from "@material-ui/core";
+import { Slider } from "@material-ui/core";
 import "./MainPage.css";
+import Map from "../Components/Map";
 
 export default function MainPage() {
 	const user = {
@@ -21,17 +21,8 @@ export default function MainPage() {
 	};
 
 	const loadGoogleMapScript = (callback) => {
-		const googleMapScript = document.createElement("script");
-		googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAP_SECRET}`;
-		document.body.appendChild(googleMapScript);
-		googleMapScript.addEventListener("load", callback);
+		return callback;
 	};
-
-	useEffect(() => {
-		loadGoogleMapScript(() => {
-			setLoadMap(true);
-		});
-	}, []);
 
 	useEffect(async () => {
 		setPositions([user]);
@@ -43,9 +34,9 @@ export default function MainPage() {
 			let driver = res.data.drivers[i];
 			setPositions((positions) => [...positions, driver]);
 		}
+		setLoadMap(true);
 	}, [numOfDrivers]);
 
-	console.log(positions);
 	return (
 		<div className="main-page">
 			<h2>FIND MY DRIVERS</h2>
@@ -54,7 +45,7 @@ export default function MainPage() {
 					<div>Loading...</div>
 				) : (
 					<div>
-						<GoogleMap positions={positions} />
+						<Map id="map" />
 					</div>
 				)}
 				<div className="slider-container">
