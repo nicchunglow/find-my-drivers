@@ -30,14 +30,14 @@ export default function MainPage() {
 			process.env.REACT_APP_BASE_MAP_URL +
 				`/drivers?latitude=${user.geometry.coordinates[0]}&longitude=${user.geometry.coordinates[1]}&count=${numOfDrivers}`,
 		);
-		user.properties.message = `The estimated pickup time is ${res.data.pickup_eta} min/s`;
+		user.properties.message = `You are here! The estimated pickup time by the other drivers will be ${res.data.pickup_eta} min/s`;
 		setPositions([user]);
 		for (let i = 0; i < res.data.drivers.length; i++) {
 			let driver = res.data.drivers[i];
 			let newDriver = {
 				type: "driver",
 				properties: {
-					message: `The estimated pickup time is ${res.data.pickup_eta} min/s.`,
+					message: "I am one of the drivers near you!",
 					iconSize: [40, 40],
 				},
 				geometry: {
