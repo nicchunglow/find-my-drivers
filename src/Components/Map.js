@@ -1,6 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "./Map.css";
+import { red } from "@material-ui/core/colors";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAP_SECRET;
 
@@ -23,17 +24,21 @@ const Map = (props) => {
 			container: mapContainerRef.current,
 			style: "mapbox://styles/mapbox/streets-v11",
 			center: [lng, lat],
+			color: red,
 			zoom: zoom,
 		});
 
-		const makeMarker = (coordinates, popup, drag) => {
-			let marker = new mapboxgl.Marker({ draggable: drag }).setLngLat(coordinates).setPopup(popup).addTo(map);
+		const makeMarker = (coordinates, popup, color, drag) => {
+			let marker = new mapboxgl.Marker({ color: color, draggable: drag })
+				.setLngLat(coordinates)
+				.setPopup(popup)
+				.addTo(map);
 		};
 
 		geojson.features.forEach(function (marker) {
 			let popup = new mapboxgl.Popup({ offset: 25 }).setText(marker.properties.message);
 			if (marker.type === "user") {
-				makeMarker(marker.geometry.coordinates, popup, true);
+				makeMarker(marker.geometry.coordinates, popup, "#FF2400", true);
 			} else {
 				makeMarker(marker.geometry.coordinates, popup, false);
 			}
