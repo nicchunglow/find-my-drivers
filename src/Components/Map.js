@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "./Map.css";
+import MapboxGeocoder from "@mapbox/mapbox-gl-geocoder";
+import "@mapbox/mapbox-gl-geocoder/dist/mapbox-gl-geocoder.css";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAP_SECRET;
 
@@ -49,6 +51,14 @@ const Map = (props) => {
 				makeMarker(marker.geometry.coordinates, popup, false);
 			}
 		});
+
+		let geocoder = new MapboxGeocoder({
+			accessToken: mapboxgl.accessToken,
+			mapboxgl: mapboxgl,
+		});
+
+		map.addControl(geocoder);
+
 		map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
 		map.on("mouseenter", "user", function () {
@@ -76,6 +86,7 @@ const Map = (props) => {
 			<div>
 				Longitude: {lng} | Latitude: {lat} | Zoom: {zoom}
 			</div>
+			<div id="geocoder"></div>
 			<div className="map-container" ref={mapContainerRef} />
 		</div>
 	);
