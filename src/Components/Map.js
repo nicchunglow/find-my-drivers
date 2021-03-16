@@ -4,12 +4,12 @@ import "./Map.css";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAP_SECRET;
 
-const Map = () => {
+const Map = (userProps) => {
 	const mapContainerRef = useRef(null);
-
-	const [lng, setLng] = useState(5);
-	const [lat, setLat] = useState(34);
-	const [zoom, setZoom] = useState(1.5);
+	const { user } = userProps;
+	const [lng, setLng] = useState(user.location.longitude);
+	const [lat, setLat] = useState(user.location.latitude);
+	const [zoom, setZoom] = useState(12);
 
 	// Initialize map when component mounts
 	useEffect(() => {
@@ -19,7 +19,7 @@ const Map = () => {
 			center: [lng, lat],
 			zoom: zoom,
 		});
-
+		var marker = new mapboxgl.Marker().setLngLat([lng, lat]).addTo(map);
 		// Add navigation control (the +/- zoom buttons)
 		map.addControl(new mapboxgl.NavigationControl(), "top-right");
 
@@ -32,6 +32,7 @@ const Map = () => {
 		// Clean up on unmount
 		return () => map.remove();
 	}, []);
+
 	return (
 		<div>
 			<div>

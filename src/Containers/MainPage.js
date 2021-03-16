@@ -45,7 +45,7 @@ export default function MainPage() {
 					<div>Loading...</div>
 				) : (
 					<div>
-						<Map id="map" />
+						<Map user={user} />
 					</div>
 				)}
 				<div className="slider-container">
