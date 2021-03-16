@@ -10,3 +10,15 @@
 		height: 60vh;
 	}
 }
+
+.marker {
+	display: block;
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	padding: 0;
+}
+
+.mapboxgl-popup {
+	max-width: 200px;
+}
