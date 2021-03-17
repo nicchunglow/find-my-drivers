@@ -21,20 +21,20 @@ export default function MainPage() {
 	const [numOfDrivers, setNumOfDrivers] = useState(2);
 	const [positions, setPositions] = useState([]);
 	const [loadMap, setLoadMap] = useState(false);
+	const [isUpdated, setIsUpdated] = useState(false);
 
 	const handleChangeNumOfDrivers = (event, newValue) => {
 		setNumOfDrivers(newValue);
 	};
 
 	const handleUserChange = (lng, lat) => {
-		console.log("user before", user.geometry.coordinates);
 		user.geometry.coordinates = [lng, lat];
-		console.log("page received", lng, lat);
-		console.log("user after", user.geometry.coordinates);
 		setPositions([user]);
+		console.log(user.geometry.coordinates);
 	};
 
 	useEffect(async () => {
+		console.log("inEffects", user.geometry.coordinates);
 		const res = await Axios.get(
 			process.env.REACT_APP_BASE_MAP_URL +
 				`/drivers?latitude=${user.geometry.coordinates[0]}&longitude=${user.geometry.coordinates[1]}&count=${numOfDrivers}`,
@@ -56,8 +56,9 @@ export default function MainPage() {
 			};
 			setPositions((positions) => [...positions, newDriver]);
 		}
+		setIsUpdated(false);
 		setLoadMap(true);
-	}, [numOfDrivers]);
+	}, [isUpdated, numOfDrivers]);
 
 	return (
 		<div className="main-page">

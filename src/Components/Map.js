@@ -43,21 +43,25 @@ const Map = (props) => {
 			color: red,
 			zoom: zoom,
 			doubleClickZoom: false,
+			interactive: true,
 		});
 
 		map.addControl(new mapboxgl.NavigationControl(), "top-right");
 		map.on("load", () => {
 			populateMarkers();
 		});
+
 		map.on("dblclick", async (event) => {
 			setLng(event.lngLat.lng.toFixed(4));
 			setLat(event.lngLat.lat.toFixed(4));
-			await handleUserChange(lng, lat);
-			console.log("map triggered", lng, lat);
+			await handleUserChange(event.lngLat.lng, event.lngLat.lat);
+		});
+		map.on("render", () => {
+			populateMarkers();
 		});
 
 		return () => map.remove();
-	}, []);
+	}, [geojson]);
 
 	return (
 		<div>
