@@ -9,8 +9,7 @@ const Map = (props) => {
 	const mapContainerRef = useRef(null);
 	let { features, handleUserChange } = props;
 	const lngLat = useRef(features[0].geometry.coordinates);
-	console.log(lngLat.current);
-	const [zoom, setZoom] = useState(14);
+	const zoom = useRef(13);
 
 	let map;
 	let geojson = {
@@ -39,7 +38,7 @@ const Map = (props) => {
 			style: "mapbox://styles/mapbox/streets-v11",
 			center: [lngLat.current[0], lngLat.current[1]],
 			color: red,
-			zoom: zoom,
+			zoom: zoom.current,
 			doubleClickZoom: false,
 			interactive: true,
 		});
@@ -50,7 +49,6 @@ const Map = (props) => {
 		});
 
 		map.on("dblclick", async (event) => {
-			lngLat.current = [event.lngLat.lng, event.lngLat.lat];
 			await handleUserChange(event.lngLat.lng, event.lngLat.lat);
 		});
 
