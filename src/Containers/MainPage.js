@@ -19,7 +19,7 @@ export default function MainPage() {
 	});
 	const [numOfDrivers, setNumOfDrivers] = useState(2);
 	const [positions, setPositions] = useState([]);
-	const [loadMap, setLoadMap] = useState(false);
+	const [loading, setloading] = useState(true);
 
 	const handleChangeNumOfDrivers = (event, newValue) => {
 		setNumOfDrivers(newValue);
@@ -60,14 +60,15 @@ export default function MainPage() {
 
 	useEffect(async () => {
 		await loadPositions();
-		setLoadMap(true);
+		setloading(false);
 	}, [numOfDrivers]);
 
 	return (
 		<div className="main-page">
 			<h2>FIND MY DRIVERS</h2>
+			{!!loading && <Loader className="loader" type="TailSpin" color="#00BFFF" height={40} width={40} />}
 			<div className="main-page-container ">
-				{!loadMap ? (
+				{!!loading ? (
 					<Loader type="TailSpin" color="#00BFFF" height={40} width={40} />
 				) : (
 					<div>
