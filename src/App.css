@@ -26,4 +26,28 @@ body {
 
 h2 {
 	font-weight: 900;
+	font-size: 2vw;
+}
+
+h4 {
+	font-size: 1vw;
+}
+
+@media only screen and (max-width: 1200px) {
+	h2 {
+		font-size: 2vw;
+	}
+
+	h4 {
+		font-size: 1.2vw;
+	}
+}
+@media only screen and (max-width: 1200px) {
+	h2 {
+		font-size: 3vw;
+	}
+
+	h4 {
+		font-size: 2.5vw;
+	}
 }

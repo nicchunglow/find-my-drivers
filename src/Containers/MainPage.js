@@ -1,60 +1,78 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import GoogleMap from "../Components/GoogleMap";
-import { Card, Slider } from "@material-ui/core";
+import { Slider } from "@material-ui/core";
 import "./MainPage.css";
+import Map from "../Components/Map";
+import Loader from "react-loader-spinner";
 
 export default function MainPage() {
-	const user = {
-		user_id: "something",
-		location: {
-			latitude: 51.5049375,
-			longitude: -0.0964509,
+	const user = React.useRef({
+		type: "user",
+		properties: {
+			message: "This is where you are",
+			iconSize: [40, 40],
 		},
-	};
-	const [numOfDrivers, setNumOfDrivers] = useState(1);
-	const [positions, setPositions] = useState([user]);
-	const [loadMap, setLoadMap] = useState(false);
+		geometry: {
+			type: "Point",
+			coordinates: [-0.0964509, 51.5049375],
+		},
+	});
+	const [numOfDrivers, setNumOfDrivers] = useState(2);
+	const [positions, setPositions] = useState([]);
+	const [loading, setloading] = useState(true);
 
 	const handleChangeNumOfDrivers = (event, newValue) => {
 		setNumOfDrivers(newValue);
 	};
 
-	const loadGoogleMapScript = (callback) => {
-		const googleMapScript = document.createElement("script");
-		googleMapScript.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.REACT_APP_GOOGLE_MAP_SECRET}`;
-		document.body.appendChild(googleMapScript);
-		googleMapScript.addEventListener("load", callback);
+	const handleUserChange = (lng, lat) => {
+		user.current.geometry.coordinates = [lng, lat];
+		loadPositions();
 	};
+	const loadPositions = async () => {
+		let positionArr = [];
 
-	useEffect(() => {
-		loadGoogleMapScript(() => {
-			setLoadMap(true);
-		});
-	}, []);
-
-	useEffect(async () => {
-		setPositions([user]);
 		const res = await Axios.get(
 			process.env.REACT_APP_BASE_MAP_URL +
-				`/drivers?latitude=${user.location.latitude}&longitude=${user.location.longitude}&count=${numOfDrivers}`,
+				`/drivers?latitude=${user.current.geometry.coordinates[0]}&longitude=${user.current.geometry.coordinates[1]}&count=${numOfDrivers}`,
 		);
+		user.current.properties.message = `You are here! The estimated pickup time by the other drivers will be ${res.data.pickup_eta} min/s`;
+
+		positionArr.push(user.current);
+
 		for (let i = 0; i < res.data.drivers.length; i++) {
 			let driver = res.data.drivers[i];
-			setPositions((positions) => [...positions, driver]);
+			let newDriver = {
+				type: "driver",
+				properties: {
+					message: "I am one of the drivers near you!",
+					iconSize: [40, 40],
+				},
+				geometry: {
+					type: "Point",
+					coordinates: [driver.location.latitude, driver.location.longitude],
+				},
+			};
+			positionArr.push(newDriver);
 		}
+		setPositions(positionArr);
+	};
+
+	useEffect(async () => {
+		await loadPositions();
+		setloading(false);
 	}, [numOfDrivers]);
 
-	console.log(positions);
 	return (
 		<div className="main-page">
 			<h2>FIND MY DRIVERS</h2>
+			{!!loading && <Loader className="loader" type="TailSpin" color="#00BFFF" height={40} width={40} />}
 			<div className="main-page-container ">
-				{!loadMap ? (
-					<div>Loading...</div>
+				{!!loading ? (
+					<Loader type="TailSpin" color="#00BFFF" height={40} width={40} />
 				) : (
 					<div>
-						<GoogleMap positions={positions} />
+						<Map features={positions} handleUserChange={handleUserChange} />
 					</div>
 				)}
 				<div className="slider-container">

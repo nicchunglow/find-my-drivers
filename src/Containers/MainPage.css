@@ -6,6 +6,7 @@
 	margin-top: 4vh;
 	padding: 3% 0%;
 	width: 80%;
+	min-height: 80vh;
 	border-radius: 30px;
 	box-shadow: 15px 10px 20px rgba(126, 126, 126, 0.282);
 }
@@ -31,6 +32,12 @@
 	width: 15vw;
 }
 
+.loader {
+	position: absolute;
+	top: 50vh;
+	z-index: 4;
+}
+
 @media only screen and (max-width: 800px) {
 	.main-page-container {
 		flex-direction: column;
@@ -43,9 +50,4 @@
 	.slider {
 		width: 50vw;
 	}
-}
-
-.card {
-	color: red;
-	margin-right: 40px;
 }
