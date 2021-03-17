@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "./Map.css";
 import { red } from "@material-ui/core/colors";
-import MainPage from "../Containers/MainPage";
 
 mapboxgl.accessToken = process.env.REACT_APP_MAP_SECRET;
 
@@ -56,7 +55,7 @@ const Map = (props) => {
 			setLat(event.lngLat.lat.toFixed(4));
 			await handleUserChange(event.lngLat.lng, event.lngLat.lat);
 		});
-		map.on("render", () => {
+		map.on("sourcedata", () => {
 			populateMarkers();
 		});
 

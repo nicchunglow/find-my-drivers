@@ -21,7 +21,6 @@ export default function MainPage() {
 	const [numOfDrivers, setNumOfDrivers] = useState(2);
 	const [positions, setPositions] = useState([]);
 	const [loadMap, setLoadMap] = useState(false);
-	const [isUpdated, setIsUpdated] = useState(false);
 
 	const handleChangeNumOfDrivers = (event, newValue) => {
 		setNumOfDrivers(newValue);
@@ -29,18 +28,21 @@ export default function MainPage() {
 
 	const handleUserChange = (lng, lat) => {
 		user.geometry.coordinates = [lng, lat];
-		setPositions([user]);
 		console.log(user.geometry.coordinates);
+		// setPositions([user]);
+		loadPositions();
 	};
+	const loadPositions = async () => {
+		let positionArr = [];
 
-	useEffect(async () => {
-		console.log("inEffects", user.geometry.coordinates);
 		const res = await Axios.get(
 			process.env.REACT_APP_BASE_MAP_URL +
 				`/drivers?latitude=${user.geometry.coordinates[0]}&longitude=${user.geometry.coordinates[1]}&count=${numOfDrivers}`,
 		);
 		user.properties.message = `You are here! The estimated pickup time by the other drivers will be ${res.data.pickup_eta} min/s`;
-		setPositions([user]);
+
+		positionArr.push(user);
+
 		for (let i = 0; i < res.data.drivers.length; i++) {
 			let driver = res.data.drivers[i];
 			let newDriver = {
@@ -54,11 +56,15 @@ export default function MainPage() {
 					coordinates: [driver.location.latitude, driver.location.longitude],
 				},
 			};
-			setPositions((positions) => [...positions, newDriver]);
+			positionArr.push(newDriver);
 		}
-		setIsUpdated(false);
+		setPositions(positionArr);
+	};
+
+	useEffect(async () => {
+		await loadPositions();
 		setLoadMap(true);
-	}, [isUpdated, numOfDrivers]);
+	}, [numOfDrivers]);
 
 	return (
 		<div className="main-page">
