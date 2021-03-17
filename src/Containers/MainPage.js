@@ -6,7 +6,7 @@ import Map from "../Components/Map";
 import Loader from "react-loader-spinner";
 
 export default function MainPage() {
-	let user = {
+	const [user, setUser] = useState({
 		type: "user",
 		properties: {
 			message: "This is where you are",
@@ -16,20 +16,18 @@ export default function MainPage() {
 			type: "Point",
 			coordinates: [-0.0964509, 51.5049375],
 		},
-	};
-
+	});
 	const [numOfDrivers, setNumOfDrivers] = useState(2);
 	const [positions, setPositions] = useState([]);
 	const [loadMap, setLoadMap] = useState(false);
 
 	const handleChangeNumOfDrivers = (event, newValue) => {
 		setNumOfDrivers(newValue);
+		loadPositions();
 	};
 
 	const handleUserChange = (lng, lat) => {
 		user.geometry.coordinates = [lng, lat];
-		console.log(user.geometry.coordinates);
-		// setPositions([user]);
 		loadPositions();
 	};
 	const loadPositions = async () => {
@@ -64,7 +62,7 @@ export default function MainPage() {
 	useEffect(async () => {
 		await loadPositions();
 		setLoadMap(true);
-	}, [numOfDrivers]);
+	}, []);
 
 	return (
 		<div className="main-page">
