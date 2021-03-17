@@ -3,6 +3,7 @@ import Axios from "axios";
 import { Slider } from "@material-ui/core";
 import "./MainPage.css";
 import Map from "../Components/Map";
+import Loader from "react-loader-spinner";
 
 export default function MainPage() {
 	let user = {
@@ -34,7 +35,6 @@ export default function MainPage() {
 	};
 
 	useEffect(async () => {
-		setLoadMap(true);
 		const res = await Axios.get(
 			process.env.REACT_APP_BASE_MAP_URL +
 				`/drivers?latitude=${user.geometry.coordinates[0]}&longitude=${user.geometry.coordinates[1]}&count=${numOfDrivers}`,
@@ -56,15 +56,15 @@ export default function MainPage() {
 			};
 			setPositions((positions) => [...positions, newDriver]);
 		}
-		setLoadMap(false);
+		setLoadMap(true);
 	}, [numOfDrivers]);
 
 	return (
 		<div className="main-page">
 			<h2>FIND MY DRIVERS</h2>
 			<div className="main-page-container ">
-				{loadMap ? (
-					<div>Loading...</div>
+				{!loadMap ? (
+					<Loader type="TailSpin" color="#00BFFF" height={40} width={40} />
 				) : (
 					<div>
 						<Map features={positions} handleUserChange={handleUserChange} />
