@@ -6,7 +6,7 @@ import Map from "../Components/Map";
 import Loader from "react-loader-spinner";
 
 export default function MainPage() {
-	const [user, setUser] = useState({
+	const user = React.useRef({
 		type: "user",
 		properties: {
 			message: "This is where you are",
@@ -23,11 +23,10 @@ export default function MainPage() {
 
 	const handleChangeNumOfDrivers = (event, newValue) => {
 		setNumOfDrivers(newValue);
-		loadPositions();
 	};
 
 	const handleUserChange = (lng, lat) => {
-		user.geometry.coordinates = [lng, lat];
+		user.current.geometry.coordinates = [lng, lat];
 		loadPositions();
 	};
 	const loadPositions = async () => {
@@ -35,11 +34,11 @@ export default function MainPage() {
 
 		const res = await Axios.get(
 			process.env.REACT_APP_BASE_MAP_URL +
-				`/drivers?latitude=${user.geometry.coordinates[0]}&longitude=${user.geometry.coordinates[1]}&count=${numOfDrivers}`,
+				`/drivers?latitude=${user.current.geometry.coordinates[0]}&longitude=${user.current.geometry.coordinates[1]}&count=${numOfDrivers}`,
 		);
-		user.properties.message = `You are here! The estimated pickup time by the other drivers will be ${res.data.pickup_eta} min/s`;
+		user.current.properties.message = `You are here! The estimated pickup time by the other drivers will be ${res.data.pickup_eta} min/s`;
 
-		positionArr.push(user);
+		positionArr.push(user.current);
 
 		for (let i = 0; i < res.data.drivers.length; i++) {
 			let driver = res.data.drivers[i];
@@ -62,7 +61,7 @@ export default function MainPage() {
 	useEffect(async () => {
 		await loadPositions();
 		setLoadMap(true);
-	}, []);
+	}, [numOfDrivers]);
 
 	return (
 		<div className="main-page">

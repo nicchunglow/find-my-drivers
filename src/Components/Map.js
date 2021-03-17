@@ -8,9 +8,8 @@ mapboxgl.accessToken = process.env.REACT_APP_MAP_SECRET;
 const Map = (props) => {
 	const mapContainerRef = useRef(null);
 	let { features, handleUserChange } = props;
-
-	const [lng, setLng] = useState(features[0].geometry.coordinates[0]);
-	const [lat, setLat] = useState(features[0].geometry.coordinates[1]);
+	const lng = useRef(features[0].geometry.coordinates[0]);
+	const lat = useRef(features[0].geometry.coordinates[1]);
 	const [zoom, setZoom] = useState(14);
 
 	let map;
@@ -38,7 +37,7 @@ const Map = (props) => {
 		map = new mapboxgl.Map({
 			container: mapContainerRef.current,
 			style: "mapbox://styles/mapbox/streets-v11",
-			center: [lng, lat],
+			center: [lng.current, lat.current],
 			color: red,
 			zoom: zoom,
 			doubleClickZoom: false,
@@ -51,12 +50,9 @@ const Map = (props) => {
 		});
 
 		map.on("dblclick", async (event) => {
-			setLng(event.lngLat.lng.toFixed(4));
-			setLat(event.lngLat.lat.toFixed(4));
+			lng.current = event.lngLat.lng.toFixed(4);
+			lat.current = event.lngLat.lat.toFixed(4);
 			await handleUserChange(event.lngLat.lng, event.lngLat.lat);
-		});
-		map.on("sourcedata", () => {
-			populateMarkers();
 		});
 
 		return () => map.remove();
