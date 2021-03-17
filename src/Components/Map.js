@@ -6,7 +6,7 @@ import { red } from "@material-ui/core/colors";
 mapboxgl.accessToken = process.env.REACT_APP_MAP_SECRET;
 
 const Map = (props) => {
-	const mapContainerRef = useRef(null);
+	const mapContainerRef = useRef("find-my-drivers");
 	let { features, handleUserChange } = props;
 	const lngLat = useRef(features[0].geometry.coordinates);
 	const zoom = useRef(13);
@@ -49,6 +49,7 @@ const Map = (props) => {
 		});
 
 		map.on("dblclick", async (event) => {
+			lngLat.current = [event.lngLat.lng, event.lngLat.lat];
 			await handleUserChange(event.lngLat.lng, event.lngLat.lat);
 		});
 
