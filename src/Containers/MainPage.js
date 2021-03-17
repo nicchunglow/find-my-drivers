@@ -18,14 +18,23 @@ export default function MainPage() {
 	};
 
 	const [numOfDrivers, setNumOfDrivers] = useState(2);
-	const [positions, setPositions] = useState([user]);
+	const [positions, setPositions] = useState([]);
 	const [loadMap, setLoadMap] = useState(false);
 
 	const handleChangeNumOfDrivers = (event, newValue) => {
 		setNumOfDrivers(newValue);
 	};
 
+	const handleUserChange = (lng, lat) => {
+		console.log("user before", user.geometry.coordinates);
+		user.geometry.coordinates = [lng, lat];
+		console.log("page received", lng, lat);
+		console.log("user after", user.geometry.coordinates);
+		setPositions([user]);
+	};
+
 	useEffect(async () => {
+		setLoadMap(true);
 		const res = await Axios.get(
 			process.env.REACT_APP_BASE_MAP_URL +
 				`/drivers?latitude=${user.geometry.coordinates[0]}&longitude=${user.geometry.coordinates[1]}&count=${numOfDrivers}`,
@@ -47,18 +56,18 @@ export default function MainPage() {
 			};
 			setPositions((positions) => [...positions, newDriver]);
 		}
-		setLoadMap(true);
+		setLoadMap(false);
 	}, [numOfDrivers]);
 
 	return (
 		<div className="main-page">
 			<h2>FIND MY DRIVERS</h2>
 			<div className="main-page-container ">
-				{!loadMap ? (
+				{loadMap ? (
 					<div>Loading...</div>
 				) : (
 					<div>
-						<Map features={positions} />
+						<Map features={positions} handleUserChange={handleUserChange} />
 					</div>
 				)}
 				<div className="slider-container">
