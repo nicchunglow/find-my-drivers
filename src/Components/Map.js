@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import "./Map.css";
 import { red } from "@material-ui/core/colors";
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 mapboxgl.accessToken = process.env.REACT_APP_MAP_SECRET;
 
