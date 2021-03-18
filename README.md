@@ -1,70 +1,124 @@
-# Getting Started with Create React App
+### Find My Drivers - Finding nearby drivers through using mapbox.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#### Table of contents
+
+- [Introduction](#Introduction)
+
+- [Technologies](#Technologies)
+
+- [Setup](#Setup)
+
+- [Environment Variables](#Environment-Variables)
+
+- [Availble Scripts](#Available-Scripts)
+
+- [Package Issues](#Package-issues)
+
+#### Introduction
+
+As a user, I want to be able to find out where are my drivers in my current location. The application is able to change the location of the user, render new drivers as well as change the number of drivers on the road available.
+
+As a user, you can double click on the map and change the position of the user. The user is able to change the number of drivers available regardless of position.
+
+For this application, the technologies used are mainly focused on React, using hooks, as well as choosing mapbox over Google Map.
+
+For this application, it has been made responsive for smaller viewing ports.
+
+As for code, it has a husky package running to do pre-commit and pre-push hooks.
+
+For react, I decided to go with hooks instead of going with redux is due to the amount of states to be managed. The current application do not have much states to maintain at the moment. Hence, hooks are sufficient. In terms of application development in the future, integrating redux will not be an issue. The middle ground of redux and react hooks will be to use useReducer in hooks to maintain states.
+
+For the decision to choose mapbox over Google map, through research, mapbox has a more concise documentation as well as having a higher ability for customisations. I have tried to use google map and I deemed the documentation to implement is better with MapBox. OpenStreetMap API is not considered during this process as it was shared as having Incomplete documentation and may not integrate well with other tools.
+
+This article is what I use to reference: https://uptech.team/blog/mapbox-vs-google-maps-vs-openstreetmap
+
+Unfortunately, I was unable to integrate the functionality of the backend to this application. However, the link to the backend is still available below.
+
+Link to backend: https://github.com/nicchunglow/find-my-drivers-backend
+
+## Features Demo
+
+Working live demo can be accessed at https://find-my-drivers.netlify.app
+
+#### Technologies
+
+    	"@mapbox/mapbox-gl-geocoder": "^4.7.0",
+    	"@material-ui": "^4.11.3",
+    	"axios": "^0.21.1",
+    	"mapbox-gl": "1.13.0",
+    	"react": "^17.0.1",
+    	"react-loader-spinner": "^4.0.0",
+    	"react-scripts": "4.0.3",
+    	"web-vitals": "^1.1.0",
+    	"worker-loader": "^3.0.8"
+
+##### DevDependencies:
+
+    "eslint": "^7.21.0",
+    	"husky": "4.3.8",
+    	"prettier": "^2.2.1",
+    	"pretty-quick": "^3.1.0"
+
+#### Setup
+
+To run this project, git clone and install it locally using npm:
+
+```
+
+$ cd ../
+
+$ git clone git@github.com:nicchunglow/find-my-drivers.git
+
+$ npm install
+
+$ npm start
+
+```
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+npm start // runs the app in development mode
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+npm test // run test runner in interactive watch mode
 
-### `npm test`
+npm run build // Builds the app for production
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+npm run lint // check code for linting issues.
 
-### `npm run build`
+npm run lint:fix // fix your code with lint issues.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Environment Variables
 
-### `npm run eject`
+- REACT_APP_BASE_MAP_URL : https://qa-interview-test.splytech.dev/api // To Get drivers
+- REACT_APP_MAP_SECRET // secret key to use mapbox.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Package issues
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Mapbox have a issue in production that
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```
+Uncaught ReferenceError: y is not defined
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+This has been resolved by addinge `worker-loader` has part of your package and
 
-## Learn More
+```
+import ReactMapGL from "react-map-gl";
+import mapboxgl from "mapbox-gl"; // This is a dependency of react-map-gl even if you didn't explicitly install it
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+// eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass = require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+as part of your map.
 
-### Code Splitting
+https://github.com/visgl/react-map-gl/issues/1266
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project was bootstrapped with Create React App.
