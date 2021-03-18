@@ -39,6 +39,7 @@ Link to backend: https://github.com/nicchunglow/find-my-drivers-backend
 ## Features Demo
 
 Working live demo can be accessed at https://find-my-drivers.netlify.app
+This live demo is hosted on netlify.
 
 #### Technologies
 
