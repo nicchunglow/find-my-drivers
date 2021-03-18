@@ -76,6 +76,7 @@ export default function MainPage() {
 					</div>
 				)}
 				<div className="slider-container">
+					<h4>Double click on the map to change user location!</h4>
 					<h4>Current number of drivers: {numOfDrivers}</h4>
 					<div className="slider">
 						<Slider
