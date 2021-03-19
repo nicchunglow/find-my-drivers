@@ -28,11 +28,13 @@ As for code, it has a husky package running to do pre-commit and pre-push hooks.
 
 For react, I decided to go with hooks instead of going with redux is due to the amount of states to be managed. The current application do not have much states to maintain at the moment. Hence, hooks are sufficient. In terms of application development in the future, integrating redux will not be an issue. The middle ground of redux and react hooks will be to use useReducer in hooks to maintain states.
 
-For the decision to choose mapbox over Google map, through research, mapbox has a more concise documentation as well as having a higher ability for customisations. I have tried to use google map and I deemed the documentation to implement is better with MapBox. OpenStreetMap API is not considered during this process as it was shared as having Incomplete documentation and may not integrate well with other tools.
+For the decision to choose mapbox over Google map, through research, mapbox has a more concise documentation as well as having a higher ability for customisations. 
+MapBox also uses geojson, which means there is a standardisation implemented. 
+OpenStreetMap API is not considered during this process as it was shared as having Incomplete documentation and may not integrate well with other tools.
 
 This article is what I use to reference: https://uptech.team/blog/mapbox-vs-google-maps-vs-openstreetmap
 
-Unfortunately, I was unable to integrate the functionality of the backend to this application. However, the link to the backend is still available below.
+The link to the backend is available below.
 
 Link to backend: https://github.com/nicchunglow/find-my-drivers-backend
 
