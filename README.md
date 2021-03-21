@@ -6,6 +6,10 @@
 
 - [Technologies](#Technologies)
 
+- [Implementation-Decisions](#Implementation-Decisions)
+
+- [Design Pattern Consideration](#Design-Pattern-Consideration)
+
 - [Setup](#Setup)
 
 - [Environment Variables](#Environment-Variables)
@@ -20,6 +24,10 @@ As a user, I want to be able to find out where are my drivers in my current loca
 
 As a user, you can double click on the map and change the position of the user. The user is able to change the number of drivers available regardless of position.
 
+The link to the backend is available below.
+
+Link to backend: https://github.com/nicchunglow/find-my-drivers-backend
+
 For this application, the technologies used are mainly focused on React, using hooks, as well as choosing mapbox over Google Map.
 
 For this application, it has been made responsive for smaller viewing ports.
@@ -28,15 +36,17 @@ As for code, it has a husky package running to do pre-commit and pre-push hooks.
 
 For react, I decided to go with hooks instead of going with redux is due to the amount of states to be managed. The current application do not have much states to maintain at the moment. Hence, hooks are sufficient. In terms of application development in the future, integrating redux will not be an issue. The middle ground of redux and react hooks will be to use useReducer in hooks to maintain states.
 
-For the decision to choose mapbox over Google map, through research, mapbox has a more concise documentation as well as having a higher ability for customisations. 
-MapBox also uses geojson, which means there is a standardisation implemented. 
+For the decision to choose mapbox over Google map, through research, mapbox has a more concise documentation as well as having a higher ability for customisations.
+MapBox also uses geojson, which means there is a standardisation implemented.
 OpenStreetMap API is not considered during this process as it was shared as having Incomplete documentation and may not integrate well with other tools.
 
 This article is what I use to reference: https://uptech.team/blog/mapbox-vs-google-maps-vs-openstreetmap
 
-The link to the backend is available below.
+##### Design Pattern Consideration
 
-Link to backend: https://github.com/nicchunglow/find-my-drivers-backend
+When the data was taken from the api, I choose a decorator method to fit into the structure of the geojson required by MapBox. Wrapping the data into a structure that MapBox is accustom to helps to control what data is necessary.
+
+For each Marker, the builder pattern has been considered to differentiate the driver and user data. With the builder method, we can customize the marker to appear and reflect the data according to what we want. In the future, the marker will still be flexible to take in other possible marker types, such as building locations and different types of drivers.
 
 ## Features Demo
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { Slider } from "@material-ui/core";
+import { Slider, TextField, Button, Dialog, Card } from "@material-ui/core";
 import "./MainPage.css";
 import Map from "../Components/Map";
 import Loader from "react-loader-spinner";
@@ -19,7 +19,10 @@ export default function MainPage() {
 	});
 	const [numOfDrivers, setNumOfDrivers] = useState(2);
 	const [positions, setPositions] = useState([]);
+	const [savedPositions, setSavedPositions] = useState([]);
 	const [loading, setloading] = useState(true);
+	const [postSuccess, setpostSuccess] = useState(false);
+	const nameToSave = React.useRef();
 
 	const handleChangeNumOfDrivers = (event, newValue) => {
 		setNumOfDrivers(newValue);
@@ -28,6 +31,33 @@ export default function MainPage() {
 	const handleUserChange = (lng, lat) => {
 		user.current.geometry.coordinates = [lng, lat];
 		loadPositions();
+	};
+
+	const handleNametoSaveChange = (event) => {
+		nameToSave.current = event.target.value;
+	};
+
+	const saveUserPosition = async () => {
+		try {
+			if (nameToSave.current.length === 0) {
+				throw new Error("Please fill in name of current location");
+			}
+			let payload = {
+				name: nameToSave.current,
+				coordinates: {
+					lat: user.current.geometry.coordinates[1],
+					lng: user.current.geometry.coordinates[0],
+				},
+			};
+			await Axios.post(process.env.REACT_APP_BASE_BACKEND_URL + "/locations/create", payload);
+			setpostSuccess(true);
+		} catch (err) {
+			throw new Error(err);
+		}
+	};
+	const loadSavePositions = async () => {
+		const res = await Axios.get(process.env.REACT_APP_BASE_BACKEND_URL + "/locations");
+		setSavedPositions(res.data);
 	};
 	const loadPositions = async () => {
 		let positionArr = [];
@@ -63,8 +93,12 @@ export default function MainPage() {
 		setloading(false);
 	}, [numOfDrivers]);
 
+	useEffect(async () => {
+		await loadSavePositions();
+	}, [postSuccess]);
 	return (
 		<div className="main-page">
+			{postSuccess === true && <h5> Location Successfully saved! </h5>}
 			<h2>FIND MY DRIVERS</h2>
 			{!!loading && <Loader className="loader" type="TailSpin" color="#00BFFF" height={40} width={40} />}
 			<div className="main-page-container ">
@@ -77,6 +111,16 @@ export default function MainPage() {
 				)}
 				<div className="slider-container">
 					<h4>Double click on the map to change user location!</h4>
+					<TextField
+						id="outlined-basic"
+						label="Name and save your current location"
+						variant="outlined"
+						fullWidth
+						onChange={(event) => handleNametoSaveChange(event)}
+					/>
+					<Button variant="contained" color="secondary" onClick={() => saveUserPosition()}>
+						Save
+					</Button>
 					<h4>Current number of drivers: {numOfDrivers}</h4>
 					<div className="slider">
 						<Slider
@@ -89,6 +133,16 @@ export default function MainPage() {
 							onChange={handleChangeNumOfDrivers}
 							value={numOfDrivers}
 						/>
+						{savedPositions.map((eachPosition) => {
+							return (
+								<div className="card-container" key={eachPosition.name}>
+									<button onClick={() => handleUserChange(eachPosition.coordinates.lng, eachPosition.coordinates.lat)}>
+										Set
+									</button>
+									<h4>{eachPosition.name}</h4>
+								</div>
+							);
+						})}
 					</div>
 				</div>
 			</div>
