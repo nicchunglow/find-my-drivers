@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { Slider, TextField, Button, Dialog, Card } from "@material-ui/core";
+import { Slider, TextField, Button } from "@material-ui/core";
 import "./MainPage.css";
 import Map from "../Components/Map";
 import Loader from "react-loader-spinner";
@@ -21,7 +21,7 @@ export default function MainPage() {
 	const [positions, setPositions] = useState([]);
 	const [savedPositions, setSavedPositions] = useState([]);
 	const [loading, setloading] = useState(true);
-	const [postSuccess, setpostSuccess] = useState(false);
+	const [axiosSuccess, setSuccess] = useState(false);
 	const nameToSave = React.useRef();
 
 	const handleChangeNumOfDrivers = (event, newValue) => {
@@ -37,6 +37,15 @@ export default function MainPage() {
 		nameToSave.current = event.target.value;
 	};
 
+	const deleteSavedLocation = async (name) => {
+		try {
+			await Axios.delete(process.env.REACT_APP_BASE_BACKEND_URL + `/locations/${name}`);
+			setSuccess(true);
+		} catch (err) {
+			throw new Error(err);
+		}
+	};
+
 	const saveUserPosition = async () => {
 		try {
 			if (nameToSave.current.length === 0) {
@@ -50,15 +59,17 @@ export default function MainPage() {
 				},
 			};
 			await Axios.post(process.env.REACT_APP_BASE_BACKEND_URL + "/locations/create", payload);
-			setpostSuccess(true);
+			setSuccess(true);
 		} catch (err) {
 			throw new Error(err);
 		}
 	};
+
 	const loadSavePositions = async () => {
 		const res = await Axios.get(process.env.REACT_APP_BASE_BACKEND_URL + "/locations");
 		setSavedPositions(res.data);
 	};
+
 	const loadPositions = async () => {
 		let positionArr = [];
 
@@ -95,10 +106,12 @@ export default function MainPage() {
 
 	useEffect(async () => {
 		await loadSavePositions();
-	}, [postSuccess]);
+		setSuccess(false);
+	}, [axiosSuccess]);
+
 	return (
 		<div className="main-page">
-			{postSuccess === true && <h5> Location Successfully saved! </h5>}
+			{axiosSuccess === true && <h5> Successful! </h5>}
 			<h2>FIND MY DRIVERS</h2>
 			{!!loading && <Loader className="loader" type="TailSpin" color="#00BFFF" height={40} width={40} />}
 			<div className="main-page-container ">
@@ -140,6 +153,9 @@ export default function MainPage() {
 										Set
 									</button>
 									<h4>{eachPosition.name}</h4>
+									<button className="delete" onClick={() => deleteSavedLocation(eachPosition.name)}>
+										Delete Saved Location
+									</button>
 								</div>
 							);
 						})}
