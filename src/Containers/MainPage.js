@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Axios from "axios";
-import { Slider, TextField, Button, Dialog } from "@material-ui/core";
+import { Slider, TextField, Button, Dialog, Card } from "@material-ui/core";
 import "./MainPage.css";
 import Map from "../Components/Map";
 import Loader from "react-loader-spinner";
@@ -19,6 +19,7 @@ export default function MainPage() {
 	});
 	const [numOfDrivers, setNumOfDrivers] = useState(2);
 	const [positions, setPositions] = useState([]);
+	const [savedPositions, setSavedPositions] = useState([]);
 	const [loading, setloading] = useState(true);
 	const [postSuccess, setpostSuccess] = useState(false);
 	const nameToSave = React.useRef();
@@ -48,13 +49,16 @@ export default function MainPage() {
 					lng: user.current.geometry.coordinates[0],
 				},
 			};
-			await Axios.post("https://find-my-drivers-backend.herokuapp.com/locations/create", payload);
+			await Axios.post(process.env.REACT_APP_BASE_BACKEND_URL + "/locations/create", payload);
 			setpostSuccess(true);
 		} catch (err) {
 			throw new Error(err);
 		}
 	};
-
+	const loadSavePositions = async () => {
+		const res = await Axios.get(process.env.REACT_APP_BASE_BACKEND_URL + "/locations");
+		setSavedPositions(res.data);
+	};
 	const loadPositions = async () => {
 		let positionArr = [];
 
@@ -89,6 +93,9 @@ export default function MainPage() {
 		setloading(false);
 	}, [numOfDrivers]);
 
+	useEffect(async () => {
+		await loadSavePositions();
+	}, [postSuccess]);
 	return (
 		<div className="main-page">
 			{postSuccess === true && <h5> Location Successfully saved! </h5>}
@@ -126,6 +133,16 @@ export default function MainPage() {
 							onChange={handleChangeNumOfDrivers}
 							value={numOfDrivers}
 						/>
+						{savedPositions.map((eachPosition) => {
+							return (
+								<div className="card-container" key={eachPosition.name}>
+									<button onClick={() => handleUserChange(eachPosition.coordinates.lng, eachPosition.coordinates.lat)}>
+										Set
+									</button>
+									<h4>{eachPosition.name}</h4>
+								</div>
+							);
+						})}
 					</div>
 				</div>
 			</div>
