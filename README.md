@@ -24,13 +24,15 @@ As a user, I want to be able to find out where are my drivers in my current loca
 
 As a user, you can double click on the map and change the position of the user. The user is able to change the number of drivers available regardless of position.
 
+As a user, you can save your locations that you like to remember and set the location of your saved locations into the map.
+
+As a user, you can delete away your saved location now that you do not need to save anymore.
+
 The link to the backend is available below.
 
 Link to backend: https://github.com/nicchunglow/find-my-drivers-backend
 
-For this application, the technologies used are mainly focused on React, using hooks, as well as choosing mapbox over Google Map.
-
-For this application, it has been made responsive for smaller viewing ports.
+For this application, the technologies used are mainly focused on React, using hooks, as well as choosing mapbox over Google Map and made responsive for smaller viewing ports.
 
 As for code, it has a husky package running to do pre-commit and pre-push hooks.
 
