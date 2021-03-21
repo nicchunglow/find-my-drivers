@@ -33,7 +33,6 @@ export default function MainPage() {
 	};
 
 	const handleNametoSaveChange = (event) => {
-		console.log(event.target.value);
 		nameToSave.current = event.target.value;
 	};
 
