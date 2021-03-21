@@ -33,6 +33,11 @@
 	width: 15vw;
 }
 
+.save-container {
+	display: flex;
+	flex-direction: row;
+}
+
 .loader {
 	position: absolute;
 	top: 50vh;
