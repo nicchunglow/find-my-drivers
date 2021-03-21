@@ -111,8 +111,8 @@ export default function MainPage() {
 
 	return (
 		<div className="main-page">
-			{axiosSuccess === true && <h5> Successful! </h5>}
 			<h2>FIND MY DRIVERS</h2>
+			{axiosSuccess === true && <h5> Successful! </h5>}
 			{!!loading && <Loader className="loader" type="TailSpin" color="#00BFFF" height={40} width={40} />}
 			<div className="main-page-container ">
 				{!!loading ? (
