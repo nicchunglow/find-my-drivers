@@ -1,4 +1,4 @@
-### Find My Drivers - Finding nearby drivers through using mapbox.
+## Find My Drivers - Finding nearby drivers through using mapbox.
 
 #### Table of contents
 
@@ -18,7 +18,7 @@
 
 - [Package Issues](#Package-issues)
 
-#### Introduction
+### Introduction
 
 As a user, I want to be able to find out where are my drivers in my current location. The application is able to change the location of the user, render new drivers as well as change the number of drivers on the road available.
 
@@ -44,7 +44,7 @@ OpenStreetMap API is not considered during this process as it was shared as havi
 
 This article is what I use to reference: https://uptech.team/blog/mapbox-vs-google-maps-vs-openstreetmap
 
-##### Design Pattern Consideration
+#### Design Pattern Consideration
 
 When the data was taken from the api, I choose a decorator method to fit into the structure of the geojson required by MapBox. Wrapping the data into a structure that MapBox is accustom to helps to control what data is necessary.
 
