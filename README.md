@@ -55,6 +55,8 @@ For each Marker, the builder pattern has been considered to differentiate the dr
 Working live demo can be accessed at https://find-my-drivers.netlify.app
 This live demo is hosted on netlify.
 
+The backend is hosted with heroku. Hence, the backend will take some time to spin up as it is on a free tier. 
+
 #### Technologies
 
     	"@mapbox/mapbox-gl-geocoder": "^4.7.0",
