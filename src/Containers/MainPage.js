@@ -74,7 +74,7 @@ export default function MainPage() {
 		let positionArr = [];
 
 		const res = await Axios.get(
-			process.env.REACT_APP_BASE_MAP_URL +
+			process.env.REACT_APP_BASE_BACKEND_URL +
 				`/drivers?latitude=${user.current.geometry.coordinates[0]}&longitude=${user.current.geometry.coordinates[1]}&count=${numOfDrivers}`,
 		);
 		user.current.properties.message = `You are here! The estimated pickup time by the other drivers will be ${res.data.pickup_eta} min/s`;
