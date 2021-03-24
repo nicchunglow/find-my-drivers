@@ -4,11 +4,11 @@
 
 - [Introduction](#Introduction)
 
-- [Technologies](#Technologies)
-
-- [Implementation-Decisions](#Implementation-Decisions)
+- [Implementation Decisions](#Implementation-Decisions)
 
 - [Design Pattern Consideration](#Design-Pattern-Consideration)
+
+- [Technologies](#Technologies)
 
 - [Setup](#Setup)
 
@@ -28,9 +28,13 @@ As a user, you can save your locations that you like to remember and set the loc
 
 As a user, you can delete away your saved location now that you do not need to save anymore.
 
+As a user, you can click on the main user marker to get how long the nearest driver will get to you.
+
 The link to the backend is available below.
 
 Link to backend: https://github.com/nicchunglow/find-my-drivers-backend
+
+#### Implementation Decisions
 
 For this application, the technologies used are mainly focused on React, using hooks, as well as choosing mapbox over Google Map and made responsive for smaller viewing ports.
 
