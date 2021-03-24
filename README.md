@@ -114,8 +114,8 @@ npm run lint:fix // fix your code with lint issues.
 ## Environment Variables
 
 - REACT_APP_MAP_SECRET // secret key to use mapbox.
-- REACT_APP_BASE_BACKEND_URL : https://find-my-drivers-backend.herokuapp.com // For backend mongodb atlas
-*note : proxy for get drivers endpoint in backend as well under */drivers*.
+- REACT_APP_BASE_BACKEND_URL : https://find-my-drivers-backend.herokuapp.com // For backend mongodb atlas\
+*note : proxy for get drivers endpoint in backend as well under `/drivers`.
 
 ## Package issues
 
